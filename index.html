@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Isometric Idle Game</title>
+  <script src="./js/cache/tailwind.js"></script>
+  <script src="./js/tailwind.config.js"></script>
+</head>
+<body class=" bg-[url(./assets/dark-sky.png)] bg-cover">
+  <div class="relative">
+    <!-- UI Overlay -->
+    <div id="side-ui" class="h-screen w-48 bg-black/30 absolute right-0 p-4 pt-2">
+      <div class="grid grid-cols-4 mt-2">
+        <button id="camera-button" class="h-8 w-8 p-2 bg-black hover:bg-gray-600 border border-transparent hover:border-white rounded-full">
+          <svg class="fill-white" viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg"><path d="m 453.77776,84.222211 a 61.11112,61.11112 0 1 1 0,122.222239 61.11112,61.11112 0 1 1 0,-122.222239 z M 239.88889,267.55555 H 453.77776 C 521.28646,267.55555 576,212.84201 576,145.33333 576,77.82466 521.28646,23.111109 453.77776,23.111109 c -46.02429,0 -86.12846,25.399306 -106.94442,63.020839 -20.81599,-37.621533 -60.92015,-63.020839 -106.94445,-63.020839 -67.50868,0 -122.22222,54.713551 -122.22222,122.222221 0,67.50868 54.71354,122.22222 122.22222,122.22222 z m 0,-183.333339 a 61.11112,61.11112 0 1 1 0,122.222239 61.11112,61.11112 0 1 1 0,-122.222239 z M 42.901037,270.80208 c -10.312499,5.15625 -16.901041,15.75521 -16.901041,27.30903 v 183.33333 c 0,11.55382 6.493056,22.15279 16.901041,27.30904 10.407993,5.15624 22.725695,4.1059 31.987851,-2.86459 l 61.111102,-45.83334 12.22223,-9.16667 v -15.27777 -91.66666 -15.2778 L 135.99999,319.5 74.888888,273.66666 C 65.626732,266.69617 53.21354,265.64584 42.901037,270.80208 Z M 514.88889,298.11111 H 453.77776 239.88889 c -33.7066,0 -61.11111,27.40451 -61.11111,61.11112 v 91.66665 c 0,33.70661 27.40451,61.11112 61.11111,61.11112 h 213.88887 c 33.70661,0 61.11113,-27.40451 61.11113,-61.11112 v -91.66665 h 30.55554 c 16.90105,0 30.55557,-13.65452 30.55557,-30.55558 0,-16.90103 -13.65452,-30.55554 -30.55557,-30.55554 z" /><path d="M 16.335525,0.0360625 C 7.3203374,0.0360625 0,7.3563999 0,16.37159 v 92.31551 c 0,6.63518 3.9666875,12.54914 10.097013,15.0734 6.130325,2.52425 13.126112,1.15394 17.814012,-3.53396 L 120.22654,27.911027 C 124.87838,23.25919 126.28475,16.22734 123.7605,10.097013 121.23624,3.9666875 115.28623,0.0360625 108.6871,0 H 16.371588 Z" /></svg>
+        </button>
+        <button id="zoom-in" class="h-8 w-8 p-2 bg-black hover:bg-gray-600 border border-transparent hover:border-white rounded-full">
+          <svg class="fill-white -mt-[1px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"/></svg>
+        </button>
+        <button id="zoom-out" class="h-8 w-8 p-2 bg-black hover:bg-gray-600 border border-transparent hover:border-white rounded-full">
+          <svg class="fill-white -mt-[1px]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"/></svg>
+        </button>
+      </div>
+      <div class="grid grid-cols-4 mt-2">
+        <button id="dig-button" class="h-8 w-8 p-2 bg-black hover:bg-gray-600 border border-transparent hover:border-white rounded-full">
+          <svg class="fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Pro 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2025 Fonticons, Inc.--><path d="M361.4 9.4c12.5-12.5 32.8-12.5 45.3 0l96 96c12.5 12.5 12.5 32.8 0 45.3l-44.1 44.1c-18.7 18.7-44.1 29.3-70.6 29.3c-15.9 0-30.9-3.7-44.3-10.3l-97 97 50.7 50.7c12.5 12.5 12.5 32.8 0 45.3l-58.5 58.5c-30 30-70.7 46.9-113.1 46.9L32 512c-17.7 0-32-14.3-32-32l0-93.7c0-42.4 16.9-83.1 46.9-113.1l58.5-58.5c12.5-12.5 32.8-12.5 45.3 0l50.7 50.7 97-97C291.7 155.1 288 140 288 124.1c0-26.5 10.5-51.9 29.3-70.6L361.4 9.4zM384 77.3L362.5 98.7c-6.7 6.7-10.5 15.9-10.5 25.4c0 19.8 16.1 35.9 35.9 35.9c9.5 0 18.6-3.8 25.4-10.5L434.7 128 384 77.3z"/></svg>
+        </button>
+      </div>
+
+      <h2 class="text-white mt-2">Inventory</h2>
+      <hr>
+      <div id="resource-counter" class="grid grid-cols-3 gap-2 mt-2">
+      </div>
+
+      <h2 class="text-white mt-2">Structures</h2>
+      <hr>
+      <div id="structure-counter" class="grid grid-cols-3 gap-2 mt-2">
+      </div>
+    </div>
+  </div>
+  <!-- CDN option, Three.js canvas is appended by script -->
+  <!-- <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.176.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.176.0/examples/jsm/"
+    }
+  }
+  </script> -->
+  <script type="module" src="./js/main.js"></script>
+  <script type="module" src="./js/world/chunk.js"></script>
+  <script type="module" src="./js/world/flora.js"></script>
+  <script type="module" src="./js/ui/camera.js"></script>
+  <script type="module" src="./js/interact/dig.js"></script>
+  <script type="module" src="./js/interact/build.js"></script>
+  <!-- Load last -->
+   <script type="module" src="./js/world/post-initialization.js"></script>
+</body>
+</html>
