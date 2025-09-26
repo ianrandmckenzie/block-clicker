@@ -4,9 +4,9 @@
 
 import * as THREE from '../cache/three.js';
 import { Vector3, Box3 } from '../cache/three.js';
-import { chunks, CHUNK_SIZE, CHUNK_COUNT, groundDepth,
+import { chunks, CHUNK_SIZE, CHUNK_COUNT, playerMesh,
          gridSize, tileSize, scene, gridDepth, soilStart,
-         intersectMeshes, environment } from '../main.js';
+         intersectMeshes } from '../main.js';
 import { meshConfigs } from './textures.js';
 import { generateTree } from './flora/trees.js';
 
@@ -155,3 +155,4 @@ for (let i = 0; i < gridSize; i++) {
 chunks.forEach(c=> {
   c.finalize();
 });
+playerMesh.object3d.position.set(15, 15, 25);

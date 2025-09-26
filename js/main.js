@@ -4,6 +4,10 @@
 
 // IMPORTS
 import * as THREE from './cache/three.js';
+import { PlayerMesh } from './player/player-mesh.js';
+import { PlayerController } from './player/player-controller.js';
+import { PlayerPhysics } from './player/player-physics.js';
+import { createThirdPersonCamera } from './player/third-person-camera.js';
 
 // TRANSITS
 const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
@@ -11,9 +15,27 @@ const aspect = window.innerWidth / window.innerHeight;
 const d = 30;
 const clock = new THREE.Clock();
 
+// 1. Create player mesh and add to scene
+export const playerMesh = new PlayerMesh();
+
+// 2. Create input controller
+const controller = new PlayerController();
+
+// 3. Define how to detect solid blocks for physics (stub for now)
+// const getBlock = (i, j, k) => {
+//   // For now, assume nothing is solid:
+//   return false;
+// };
+// For testing:
+const getBlock = (i, j, k) => j <= 22;
+
+// 4. Create physics handler
+const physics = new PlayerPhysics(playerMesh.object3d, { getBlock });
+
+
 // EXPORTS
 export const gridSize  = 16;
-export const gridDepth = 40;
+export const gridDepth = 32;
 export const soilDepth = 4;
 export const airDepth  = 16;
 export const groundDepth = gridDepth - airDepth;
@@ -42,6 +64,9 @@ renderer.setClearColor(0x000000, 0);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+scene.add(playerMesh.object3d);
+const tpcam = createThirdPersonCamera(playerMesh.object3d, { scene });
+
 // Lighting
 scene.add(new THREE.AmbientLight(0xAAAAAA, 0.5));
 scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444, 0.6));
@@ -66,6 +91,7 @@ scene.add(dirLight);
 animate();
 
 function animate() {
+
   // 1) schedule next frame
   requestAnimationFrame(animate);
 
@@ -84,6 +110,18 @@ function animate() {
     if (mat.userData.uTimeUniform) mat.userData.uTimeUniform.value = t;
     for (const name of BREAKABLE_TEXTURES) chunk[`${name}Mesh`].visible = visible;
   });
+
+  const delta = clock.getDelta();
+  const input = controller.pollInput(); // pass to PlayerPhysics
+
+  // --- update player physics
+  physics.update(delta, input);
+
+  // --- update camera position
+  tpcam.update(delta);
+
+  // --- update player visual (crouch, etc)
+  playerMesh.updatePose(input);
 
   // 5) finally render
   renderer.render(scene, camera);
